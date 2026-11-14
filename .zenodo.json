@@ -1,15 +1,34 @@
 {
   "title": "Voice Agent Studio with QUBO Task Scheduling and Prompt Optimisation",
-  "description": "Real-time voice agent with QUBO-based QTP and QPO (SA, Tabu, QAOA sim).",
+  "description": "Real-time voice agent with QUBO-based QUBO Task Scheduler (QTP) and QUBO Prompt Optimiser (QPO) for hospitality and clinic booking. Achieves 4.3x wave-makespan speedup and SA 0% gap from brute-force optimum.",
   "creators": [
-    {"name": "10.5281/zenodo.24220510: add author names"}
+    {
+      "name": "Charan, Mukesh",
+      "affiliation": "Amrita Vishwa Vidyapeetham, Chennai",
+      "orcid": ""
+    },
+    {
+      "name": "Arumugam, Sanjjey",
+      "affiliation": "Amrita Vishwa Vidyapeetham, Chennai",
+      "orcid": ""
+    },
+    {
+      "name": "Sountharrajan, S.",
+      "affiliation": "Amrita Vishwa Vidyapeetham, Chennai",
+      "orcid": ""
+    }
   ],
-  "keywords": ["voice agent", "QUBO", "task scheduling", "prompt optimisation", "QAOA"],
+  "keywords": ["voice agent", "QUBO", "task scheduling", "prompt optimisation", "QAOA", "simulated annealing", "enterprise AI"],
   "license": "MIT",
   "version": "1.0.0",
   "upload_type": "software",
   "doi": "10.5281/zenodo.24220510",
   "access_right": "open",
-  "notes": "10.5281/zenodo.24220510: Create a Zenodo release, obtain a real DOI, and replace the placeholder above. Include: code, results/qpo_Q.csv, results/qtp_tasks.csv, research/results/latency_raw.jsonl, anonymised annotated turns, pcap hash."
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Mukesh-charan/voice-agent-studio-qubo",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
 }
-

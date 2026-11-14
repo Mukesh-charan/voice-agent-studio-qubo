@@ -4,8 +4,19 @@ message: >
 title: "Voice Agent Studio with QUBO Task Scheduling and Prompt Optimisation"
 type: software
 authors:
-  - name: "10.5281/zenodo.24220510: add author names"
-repository-code: "https://github.com/10.5281/zenodo.24220510/voice-agent-studio"
+  - family-names: Charan
+    given-names: Mukesh
+    email: mukeshcharan@ch.amrita.edu
+    affiliation: "Amrita Vishwa Vidyapeetham, Chennai"
+  - family-names: Arumugam
+    given-names: Sanjjey
+    email: sanjjeyarumugam@ch.amrita.edu
+    affiliation: "Amrita Vishwa Vidyapeetham, Chennai"
+  - family-names: Sountharrajan
+    given-names: S.
+    email: s_sountharrajan@ch.amrita.edu
+    affiliation: "Amrita Vishwa Vidyapeetham, Chennai"
+repository-code: "https://github.com/Mukesh-charan/voice-agent-studio-qubo"
 abstract: >
   A real-time voice agent system for hospitality and clinic booking, featuring
   QUBO-based task scheduling (QTP) and prompt optimisation (QPO) using
@@ -17,7 +28,10 @@ keywords:
   - prompt optimisation
   - QAOA
 license: MIT
-doi: "10.5281/zenodo.24220510: replace with Zenodo DOI after archiving release"
+doi: "10.5281/zenodo.24220510"
 date-released: "2026-11-14"
 version: "1.0.0"
-
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.24220510"
+    description: "Zenodo software archive"
