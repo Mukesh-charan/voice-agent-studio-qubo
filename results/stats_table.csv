@@ -1,0 +1,4 @@
+test,statistic,pvalue,ci_lower,ci_upper,n,provenance,note
+McNemar (exact binomial),5.0,0.3018,none,none,15,nominal,exact binomial McNemar
+Wilson CI (proportion),0.72,none,0.6251,0.7986,100,nominal,"k=72, n=100, alpha=0.05"
+Bootstrap CI (mean fitness),0.7902,none,0.7735,0.8078,100,nominal,"n_boot=1000, seed=1234"
