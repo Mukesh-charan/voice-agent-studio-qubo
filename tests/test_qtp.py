@@ -299,3 +299,22 @@ async def test_dispatch_quantum_parallel_booking():
     )
     assert res2["is_valid"] is True
     print("Test Dispatch Parallel Booking: PASSED", res["telemetry"])
+
+
+def test_topo_greater_or_equal_critical_path():
+    """Task 3.1 invariant: topological makespan must be >= critical path for every workload."""
+    from scripts.bench_qtp import generate_task_workload
+    from qpo.task_parallelizer import QuboTaskScheduler, compute_dag_metrics
+
+    scheduler = QuboTaskScheduler()
+    for n in [3, 4, 5, 6, 8, 10]:
+        tasks = generate_task_workload(n)
+        layers = scheduler.schedule_topological(tasks)
+        topo_ms = sum(max(t.estimated_duration_ms for t in layer) for layer in layers)
+
+        dummy_assignment = {t.task_id: 0 for t in tasks}
+        metrics = compute_dag_metrics(tasks, dummy_assignment)
+        cp_ms = metrics["critical_path_ms"]
+
+        assert topo_ms >= cp_ms - 1e-6, f"At N={n}: Topo ({topo_ms}) below critical path ({cp_ms})"
+

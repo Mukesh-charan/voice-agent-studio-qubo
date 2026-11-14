@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT))
 # ---------- QPO: module library ----------
 def test_qpo_n_modules():
     from qpo.modules import N_MODULES
-    assert N_MODULES == 16, f"Code has {N_MODULES} modules, manuscript says 15"
+    assert N_MODULES == 15, f"Code has {N_MODULES} modules, manuscript requires 15"
 
 def test_qpo_token_budget():
     from qpo.modules import TOKEN_BUDGET

@@ -14,4 +14,3 @@ kb_refuse_unknown,28,0.65,rag|refusal,False
 date_handling,30,0.7,booking|date,False
 booking_flow,32,0.75,booking,False
 escalation,25,0.65,escalation,False
-tone_verbose,22,0.3,tone|verbose,False

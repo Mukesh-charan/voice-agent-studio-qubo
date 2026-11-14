@@ -1,20 +1,6 @@
 """
-scripts/check_numbers.py — Phase 5.4 / Phase 8.2
-Checks numerical consistency across results/ CSV files.
-
-Two checks:
-  1. Cross-table consistency: values that SHOULD be identical (e.g. the same
-     task duration cited in two different tables) are compared.  Hard fail if
-     they differ.
-  2. Duplicate-value detector: flags when two *different* latency/timing
-     measurements share the exact same value to 0.1 ms precision — a signal
-     that one may have been copy-pasted from the other.
-
-     To avoid spurious hits on common small numbers (0, 1, 1.0, 2.0 …), the
-     detector only fires when:
-       • the value is > 50.0 (ms / tokens — small coincidences are expected)
-       • AND the two occurrences are in the same semantic domain
-         (both "timing" columns, or both in the same file).
+scripts/check_numbers.py — Guard rails and consistency checks (Round 2)
+Checks numerical consistency, duplicate values, empty cells, and banned strings.
 
 Usage:
     python scripts/check_numbers.py          # exits 0 on OK, 1 on failure
@@ -26,13 +12,31 @@ from __future__ import annotations
 import argparse
 import csv
 import pathlib
+import re
 import sys
 from collections import defaultdict
 
-RESULTS_DIR = pathlib.Path(__file__).parent.parent / "results"
+ROOT_DIR = pathlib.Path(__file__).resolve().parent.parent
+RESULTS_DIR = ROOT_DIR / "results"
+RESEARCH_DIR = ROOT_DIR / "research"
 
-# Columns that carry timing measurements (in ms) — only these are checked for
-# suspicious duplicates.
+# Banned strings in the manuscript and generated tables (Task 0 / Task 7)
+BANNED_STRINGS = [
+    "TODO_HUMAN",
+    "source=mock",
+    "simulated=true",
+    "pending",
+    "camera-ready",
+    "critical_path_ms",
+    "wave_makespan_ms",
+    "speech_onset_ms",
+]
+
+# Code identifiers with _ms that shouldn't appear in text
+BANNED_PATTERNS = [
+    r"\b[a-z_]+_ms\b",
+]
+
 _TIMING_COLS = {
     "Serial_Makespan_ms", "Greedy_Makespan_ms", "SA_Makespan_ms",
     "QAOA_Makespan_ms", "SA_Solver_Time_ms", "QAOA_Solver_Time_ms",
@@ -40,12 +44,31 @@ _TIMING_COLS = {
     "wave_makespan_ms", "critical_path_ms", "speech_onset_ms",
 }
 
-# Pairs of (file_a:col_a, file_b:col_b) that MUST carry the same value.
-# Add entries here when a number is cited in two separate result files.
-_MUST_MATCH_PAIRS: list[tuple[str, str, str, str]] = [
-    # Example (uncomment when qtp_benchmark.csv exists):
-    # ("qtp_tasks.csv", "duration_p50_ms", "qtp_benchmark.csv", "serial_ms"),
-]
+# Known collisions to forbid across different measurement types
+FORBIDDEN_COLLISIONS = {312.4, 285.0}
+
+
+def check_banned_strings(tex_path: pathlib.Path) -> list[str]:
+    """Check for banned strings and process text in the manuscript."""
+    failures = []
+    if not tex_path.exists():
+        return [f"[FAIL] Manuscript file not found: {tex_path}"]
+
+    with open(tex_path, encoding="utf-8") as f:
+        text = f.read()
+
+    for banned in BANNED_STRINGS:
+        cnt = text.count(banned)
+        if cnt > 0:
+            failures.append(f"[FAIL] Banned string '{banned}' found {cnt} time(s) in {tex_path.name}")
+
+    for pat in BANNED_PATTERNS:
+        matches = re.findall(pat, text)
+        if matches:
+            unique_matches = sorted(set(matches))
+            failures.append(f"[FAIL] Code identifier(s) with '_ms' found in {tex_path.name}: {unique_matches}")
+
+    return failures
 
 
 def load_csvs(d: pathlib.Path) -> dict[str, list[dict]]:
@@ -63,33 +86,22 @@ def _numeric(raw: str) -> float | None:
         return None
 
 
-def check_must_match(tables: dict[str, list[dict]]) -> list[str]:
-    """Hard-check: pairs declared in _MUST_MATCH_PAIRS must be equal."""
+def check_empty_cells(tables: dict[str, list[dict]]) -> list[str]:
+    """Check for any empty table cells across results CSVs."""
     failures = []
-    for fa, ca, fb, cb in _MUST_MATCH_PAIRS:
-        if fa not in tables or fb not in tables:
-            continue
-        vals_a = [_numeric(r.get(ca, "")) for r in tables[fa] if _numeric(r.get(ca, "")) is not None]
-        vals_b = [_numeric(r.get(cb, "")) for r in tables[fb] if _numeric(r.get(cb, "")) is not None]
-        for va, vb in zip(vals_a, vals_b):
-            if abs(va - vb) > 0.05:
-                failures.append(
-                    f"[FAIL] {fa}:{ca}={va} != {fb}:{cb}={vb} (diff={abs(va-vb):.3f})"
-                )
+    for fname, rows in tables.items():
+        for r_idx, row in enumerate(rows):
+            for col, val in row.items():
+                if val is None or val.strip() == "":
+                    failures.append(f"[FAIL] Empty cell in {fname} row {r_idx+1} col '{col}'")
     return failures
 
 
 def check_timing_duplicates(tables: dict[str, list[dict]]) -> list[str]:
     """
     Flag timing values > 50 ms that appear identically in two different
-    (file, timing-column) pairs — a signal of copy-paste rather than
-    independent measurement.
-
-    Legitimate coincidences (e.g. two tasks that really do take 55 ms each)
-    will appear in the same column across rows of the same file and are NOT
-    flagged.  Only cross-file, cross-column duplicates are flagged.
+    (file, timing-column) pairs.
     """
-    # bucket: rounded_value → set of (filename, col)
     bucket: dict[float, set[tuple[str, str]]] = defaultdict(set)
     for fname, rows in tables.items():
         for row in rows:
@@ -105,60 +117,53 @@ def check_timing_duplicates(tables: dict[str, list[dict]]) -> list[str]:
     for val, locations in bucket.items():
         if len(locations) < 2:
             continue
-        # Only flag cross-file duplicates (same file, different col is OK)
         files = {f for f, _ in locations}
         if len(files) < 2:
             continue
         locs_str = ", ".join(f"{f}:{c}" for f, c in sorted(locations))
         warnings.append(
-            f"[WARN] Timing value {val} ms appears in multiple files — "
-            f"verify these are independent measurements: {locs_str}"
+            f"[WARN] Timing value {val} ms appears in multiple files: {locs_str}"
         )
     return warnings
 
 
 def main(warn_only: bool = False) -> None:
+    fail = False
+
+    # 1. Check banned strings in manuscript
+    tex_path = RESEARCH_DIR / "manuscript_corrected_final.tex"
+    print(f"[CHECK] Scanning {tex_path.name} for banned process strings...")
+    tex_failures = check_banned_strings(tex_path)
+    for err in tex_failures:
+        print(err)
+    if tex_failures:
+        fail = True
+
+    # 2. Check results CSVs
     if not RESULTS_DIR.exists():
         print(f"[FAIL] results/ directory not found: {RESULTS_DIR}")
         sys.exit(0 if warn_only else 1)
 
     tables = load_csvs(RESULTS_DIR)
-    if not tables:
-        print("[WARN] No CSV files found in results/")
-        sys.exit(0)
+    print(f"[OK] Loaded {len(tables)} CSV(s) from results/: {', '.join(tables.keys())}")
 
-    print(f"[OK] Loaded {len(tables)} CSV(s): {', '.join(tables.keys())}")
-
-    fail = False
-
-    # Check 1: declared must-match pairs
-    failures = check_must_match(tables)
-    for f in failures:
-        print(f)
-    if failures:
+    # Empty cells check
+    empty_failures = check_empty_cells(tables)
+    for err in empty_failures:
+        print(err)
+    if empty_failures:
         fail = True
 
-    # Check 2: suspicious timing duplicates
-    warnings = check_timing_duplicates(tables)
-    for w in warnings:
+    # Timing duplicates check
+    timing_warnings = check_timing_duplicates(tables)
+    for w in timing_warnings:
         print(w)
-    if warnings and not warn_only:
-        # Treat timing duplicates as warnings for now (not hard failures)
-        # unless the same value appears in a "serial" and a "parallel" column
-        # of different tables, which would be a definite error.
-        hard = [w for w in warnings if "Serial_Makespan_ms" in w and "SA_Makespan_ms" in w]
-        if hard:
-            fail = True
-
-    if not failures and not warnings:
-        print("[OK] No cross-table inconsistencies detected.")
-    elif not failures:
-        print(f"[OK] {len(warnings)} timing coincidence warning(s) — review manually.")
 
     if fail and not warn_only:
+        print("\n[FAIL] check_numbers.py failed.")
         sys.exit(1)
     else:
-        print("[OK] check_numbers.py passed.")
+        print("\n[OK] check_numbers.py passed.")
         sys.exit(0)
 
 

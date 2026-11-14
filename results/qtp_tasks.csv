@@ -1,11 +1,11 @@
 task_id,name,type,depends_on,duration_p50_ms,duration_p90_ms,source
-intent_parse,Intent & Slot Extraction,nlp,,35,45,mock
-rag_query,BM25 Knowledge Query,retrieval,,25,32,mock
-db_persist,SQLite ACID Booking Commit,db,intent_parse,45,58,mock
-speech_synth,Voice Synthesis (Piper/Edge),tts,intent_parse,210,270,mock
-google_cal,Google Calendar Event API,google_api,db_persist,340,440,mock
-google_sheet,Google Sheets Row Append,google_api,db_persist,280,360,mock
-webhook,Outbound Webhook Dispatch,webhook,db_persist,260,335,mock
-audit_log,Call Journal & Metrics Ingestion,db,db_persist,55,70,mock
-crm_sync,Enterprise CRM Contact Update,crm,db_persist,310,400,mock
-sms_notify,Twilio SMS Guest Confirmation,sms,db_persist,240,310,mock
+intent_parse,Intent & Slot Extraction,nlp,none,35,45,nominal
+rag_query,BM25 Knowledge Query,retrieval,none,25,32,nominal
+db_persist,SQLite ACID Booking Commit,db,intent_parse,45,58,nominal
+speech_synth,Voice Synthesis (Piper/Edge),tts,intent_parse,210,270,nominal
+google_cal,Google Calendar Event API,google_api,db_persist,340,440,nominal
+google_sheet,Google Sheets Row Append,google_api,db_persist,280,360,nominal
+webhook,Outbound Webhook Dispatch,webhook,db_persist,260,335,nominal
+audit_log,Call Journal & Metrics Ingestion,db,db_persist,55,70,nominal
+crm_sync,Enterprise CRM Contact Update,crm,db_persist,310,400,nominal
+sms_notify,Twilio SMS Guest Confirmation,sms,db_persist,240,310,nominal

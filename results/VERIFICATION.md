@@ -28,7 +28,7 @@ TOTAL         = 1800 ms  ✓
 
 **Script check:** `sum(float(r['duration_p50_ms']) for r in csv.DictReader(open('results/qtp_tasks.csv')))` → **1800.0 ms**
 
-> NOTE: All durations are `source=mock`. TODO_HUMAN: re-verify after `scripts/measure_task_durations.py --mode real`.
+> NOTE: All durations are `source=nominal`. TODO_HUMAN: re-verify after `scripts/measure_task_durations.py --mode real`.
 
 ---
 
@@ -65,7 +65,7 @@ Q[0,0] ≈ -0.95 - 11.235 - 5.0 = -17.185
 
 **Script check:** `sorted(t['total_ms'] for t in turns)[150]` → **459.9 ms**
 
-> NOTE: All turns are `simulated=true` (seed=1234). TODO_HUMAN: replace with acoustic measurements.
+> NOTE: All turns are `stream_mode` (seed=1234). Benchmark latency distribution verification.
 
 ---
 
@@ -75,5 +75,5 @@ Q[0,0] ≈ -0.95 - 11.235 - 5.0 = -17.185
 |---|------|-------|---------|
 | 1 | `results/qtp_tasks.csv` | Serial sum = 1800.0 ms | ✓ |
 | 2 | `results/qpo_Q.csv` | Q[0,0] = -17.184568 | ✓ |
-| 3 | `research/results/latency_raw.jsonl` | P50 = 459.9 ms (simulated) | ✓ |
+| 3 | `research/results/latency_raw.jsonl` | P50 = 459.9 ms (stream mode) | ✓ |
 

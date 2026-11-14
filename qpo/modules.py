@@ -141,14 +141,6 @@ MODULES: list[PromptModule] = [
         token_cost=25, value=0.65,
         tags=["escalation"],
     ),
-    # ── Verbose (conflict with brevity — included to create real QUBO structure) ─
-    PromptModule(
-        id="tone_verbose",
-        text="Be thorough and detailed in your explanations. Walk the guest through each step clearly, "
-             "even if that takes several sentences.",
-        token_cost=22, value=0.30,  # low value on its own for voice
-        tags=["tone", "verbose"],
-    ),
 ]
 
 # ── Module index helpers ──────────────────────────────────────────────────────
@@ -189,7 +181,6 @@ def build_conflict_matrix() -> list[list[float]]:
 
     # Tone conflicts
     _set_conflict("tone_warm",    "tone_formal",  0.8)
-    _set_conflict("rule_brevity", "tone_verbose", 1.5)
 
     # Two persona × tone_formal (formal already implied by clinic persona)
     _set_conflict("persona_clinic", "tone_warm", 0.3)
