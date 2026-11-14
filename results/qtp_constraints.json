@@ -1,0 +1,6 @@
+{
+  "concurrency_cap": 4,
+  "gpu_tasks": [],
+  "google_api_cap": 2,
+  "_comment": "Default capacity constraints for QUBO task scheduling. See build_task_scheduling_qubo() in qpo/task_parallelizer.py."
+}

@@ -1,0 +1,16 @@
+{
+  "seed": 1234,
+  "n_sizes": [
+    8,
+    12,
+    15
+  ],
+  "n_instances": 30,
+  "solvers": [
+    "brute_force",
+    "greedy",
+    "simulated_annealing",
+    "tabu_search"
+  ],
+  "total_rows": 360
+}

@@ -1,0 +1,14 @@
+Generative AI Declaration
+=========================
+
+The authors confirm that generative AI tools (including large language models)
+were used during the preparation of this manuscript for the following limited
+purposes:
+  - Code scaffolding and docstring generation (reviewed and edited by authors)
+  - Grammar and clarity improvements to draft text (reviewed by authors)
+
+No AI-generated text was inserted into the manuscript without human review.
+No AI tool was used to generate or fabricate experimental results, figures,
+or citations. The authors take full responsibility for the integrity of all
+reported results.
+

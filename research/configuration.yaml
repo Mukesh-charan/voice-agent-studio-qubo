@@ -1,0 +1,11 @@
+# Single source of truth for hardware / model configuration
+# Referenced by: research paper, results/, scripts/check_numbers.py
+
+model: Qwen2.5-7B-Instruct
+quantization: INT4-GPTQ        # single quantization scheme (not both INT4 and AWQ)
+vram_local_gb: 5.6             # GPU VRAM used in local-only inference mode
+vram_hybrid_gb: 1.4            # GPU VRAM used in CPU-offload hybrid mode
+ram_gb: 16                     # host RAM
+image_size_gb: 4.2             # Docker image size on disk
+asr_model: whisper-base
+tts_model: piper

@@ -1,0 +1,5 @@
+{
+  "accuracy": null,
+  "note": "TODO_HUMAN: Run scripts/eval_bargein.py with real barge-in audio recordings",
+  "status": "pending"
+}

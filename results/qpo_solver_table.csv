@@ -1,0 +1,5 @@
+solver,F,F_star,gap_pct,n_modules,token_total,wall_time_s
+brute_force,-7.2311,-7.2311,0,8,204,0.419801
+greedy,-6.3472,-7.2311,12.2243,7,196,0.001778
+simulated_annealing,-7.2311,-7.2311,0,8,204,0.051709
+tabu_search,-7.08,-7.2311,2.0897,8,207,0.274302

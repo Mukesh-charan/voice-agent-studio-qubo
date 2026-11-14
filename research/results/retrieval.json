@@ -1,0 +1,5 @@
+{
+  "p_at_1": null,
+  "note": "TODO_HUMAN: Provide research/data/retrieval_eval.jsonl and re-run scripts/bench_retrieval.py",
+  "status": "pending"
+}

@@ -1,0 +1,17 @@
+id,tokens,value,tags,is_persona
+persona_hospitality,35,0.95,persona|hospitality,True
+persona_clinic,32,0.95,persona|clinic,True
+tone_warm,18,0.6,tone,False
+tone_formal,15,0.5,tone,False
+rule_brevity,20,0.8,voice_rule|brevity,False
+rule_one_question,16,0.7,voice_rule,False
+rule_no_markdown,24,0.85,voice_rule|no_markdown,False
+rule_no_preamble,22,0.75,voice_rule,False
+policy_refusal,30,0.8,guardrail|refusal,False
+policy_pii,28,0.85,guardrail|pii,False
+kb_grounding,26,0.8,rag|kb_grounding,False
+kb_refuse_unknown,28,0.65,rag|refusal,False
+date_handling,30,0.7,booking|date,False
+booking_flow,32,0.75,booking,False
+escalation,25,0.65,escalation,False
+tone_verbose,22,0.3,tone|verbose,False

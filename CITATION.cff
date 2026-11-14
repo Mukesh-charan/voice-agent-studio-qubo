@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: >
+  If you use this software, please cite it using the metadata below.
+title: "Voice Agent Studio with QUBO Task Scheduling and Prompt Optimisation"
+type: software
+authors:
+  - name: "TODO_HUMAN: add author names"
+repository-code: "https://github.com/TODO_HUMAN/voice-agent-studio"
+abstract: >
+  A real-time voice agent system for hospitality and clinic booking, featuring
+  QUBO-based task scheduling (QTP) and prompt optimisation (QPO) using
+  simulated annealing, tabu search, and QAOA simulation.
+keywords:
+  - voice agent
+  - QUBO
+  - task scheduling
+  - prompt optimisation
+  - QAOA
+license: MIT
+doi: "TODO_HUMAN: replace with Zenodo DOI after archiving release"
+date-released: "2026-11-14"
+version: "1.0.0"
+

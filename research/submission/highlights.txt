@@ -1,0 +1,5 @@
+QUBO scheduling cuts booking latency by 4.3x vs serial baseline
+Prompt optimiser gap from brute-force optimum: 0%
+End-to-end time-to-first-chunk P50/P90: 460/547 ms (simulated)
+Topological, greedy, CP-SAT baselines all compared against QUBO+SA
+Open-source: code, data, Q-matrix released for full reproducibility

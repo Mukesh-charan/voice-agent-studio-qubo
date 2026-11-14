@@ -1,0 +1,21 @@
+turn_id,transcript,response,detail_retention_gold,detail_retention_annotator1,detail_retention_annotator2,notes
+1,John Smith | 3 PM | deluxe room,"Your booking is confirmed, John Smith. Deluxe room on Tuesday at 3 PM.","John Smith, 3 PM, deluxe room",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+2,Sarah | appointment | 2:30 PM | Dr. Patel,"Sarah, your appointment with Dr. Patel is set for 2:30 PM tomorrow.","Sarah, appointment, 2:30 PM, Dr. Patel",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+3,checkout | 11 AM | room 204,Checkout for room 204 is at 11 AM. Is there anything else I can help with?,"checkout, 11 AM, room 204",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+4,pool access | included | sunrise package,"Yes, pool access is included with the Sunrise Package.","pool access, included, sunrise package",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+5,dinner reservation | 7:30 PM | Mr. Kumar | window table,"Mr. Kumar, your dinner reservation is at 7:30 PM at a window table.","dinner reservation, 7:30 PM, Mr. Kumar, window table",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+6,cancel | appointment | Dr. Lee | Thursday,Your Thursday appointment with Dr. Lee has been cancelled.,"cancel, appointment, Dr. Lee, Thursday",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+7,extra towels | room 310,I will send extra towels to room 310 right away.,"extra towels, room 310",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+8,conference room B | 9 AM | Monday,Conference room B is booked for you on Monday at 9 AM.,"conference room B, 9 AM, Monday",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+9,spa treatment | 4 PM | Ms. Priya,"Ms. Priya, your spa treatment is confirmed for 4 PM today.","spa treatment, 4 PM, Ms. Priya",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+10,medication reminder | blood pressure | Dr. Sharma,I have noted the blood pressure medication reminder. Dr. Sharma will be informed.,"medication reminder, blood pressure, Dr. Sharma",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+11,suite upgrade | anniversary | complimentary,Happy anniversary! A complimentary suite upgrade has been arranged.,"suite upgrade, anniversary, complimentary",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+12,late checkout | noon | room 517,Late checkout until noon has been approved for room 517.,"late checkout, noon, room 517",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+13,wheelchair | accessible room | ground floor,An accessible ground floor room with wheelchair access is reserved.,"wheelchair, accessible room, ground floor",0.5,,auto-scored phi_retain=0.67; ann2 needed for kappa
+14,breakfast | included | 7 AM | buffet,Breakfast buffet is included and runs from 7 AM. Enjoy your stay!,"breakfast, included, 7 AM, buffet",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+15,follow-up | blood test | Thursday | 10 AM,Your blood test follow-up is scheduled for Thursday at 10 AM.,"follow-up, blood test, Thursday, 10 AM",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+16,parking | valet | complimentary,Complimentary valet parking is available for all our guests.,"parking, valet, complimentary",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+17,room service | menu | 24 hours,Room service is available 24 hours. I will send the menu to your room.,"room service, menu, 24 hours",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+18,physiotherapy | 3 PM | Dr. Nair,Your physiotherapy session with Dr. Nair is confirmed at 3 PM.,"physiotherapy, 3 PM, Dr. Nair",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
+19,early checkin | 10 AM | ocean view,Early check-in at 10 AM for the ocean view room has been arranged.,"early checkin, 10 AM, ocean view",0.5,,auto-scored phi_retain=0.67; ann2 needed for kappa
+20,prescription | refill | pharmacy | 2 days,"Prescription refill sent to pharmacy, ready in 2 days.","prescription, refill, pharmacy, 2 days",1.0,,auto-scored phi_retain=1.00; ann2 needed for kappa
