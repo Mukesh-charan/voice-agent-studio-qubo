@@ -49,7 +49,7 @@
 % Running headers
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\itshape Mukesh Charan, Sanjjey Arumugam, S. Sountharrajan}
+\fancyhead[L]{\small\itshape Mukesh Charan, Sanjjey Arumugam, S. Sountharrajan, K. V. Meenatchi}
 \fancyhead[R]{\small\itshape Engineering Applications of Artificial Intelligence}
 \fancyfoot[C]{\normalsize\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -126,7 +126,8 @@
 }
 
 \begin{abstract}
-Real-time voice agents for hospitality and clinic booking workflows must respond within 800\,ms (time to first audio chunk, TTFC, measured from speech endpoint) while executing multi-service transactional tasks without compromising data privacy. We present a two-stage combinatorial architecture comprising an offline QUBO Prompt Optimiser (QPO) and a runtime QUBO Task Scheduler (QTP). QPO formulates prompt instruction selection as an offline Quadratic Unconstrained Binary Optimization (QUBO) problem with normalized token budgeting ($\tau_i = t_i / T$, $\mu \in [16, 64]$) and persona-exclusivity regularization ($\lambda = 5.0$), mapping to an Ising spin-glass Hamiltonian. On an enterprise 10-task workload, QTP achieves a $4.3\times$ wave-makespan speedup over serial execution (wave makespan: 495\,ms vs.\ serial 1800\,ms; critical path yields speech onset at 143.5\,ms). QPO at $\mu=64$ selects a compact module configuration with 0\% gap from the certified brute-force optimum via Simulated Annealing. Across $N=300$ benchmark turns in stream mode, the pipeline delivers a median time-to-first-chunk of 323.6\,ms (P90 = 405.7\,ms in cloud-hybrid mode) and 482.0\,ms on local edge GPU. Automatic evaluation across 320 dialogue turns demonstrates 97.5\% (No Markdown), 98.1\% (No Preamble), 97.2\% ($\le 1$ Question), and 95.6\% ($\le 3$ Sentences) adherence, with 93.9\% factual detail retention. Lexical BM25 retrieval achieves 82.69\% P@1 and 91.67\% R@4 across 52 gold-annotated domain queries with 0.045\,ms median latency. Host-level monitoring confirms zero external WAN data egress from the conversational pipeline in local sovereign container mode.
+Real-time voice agents for hospitality and clinic booking workflows must respond within 800\,ms (time to first audio chunk, TTFC, measured from speech endpoint) while executing multi-service transactional tasks without compromising data privacy. We present a two-stage combinatorial architecture comprising an offline QUBO Prompt Optimiser (QPO) and a runtime QUBO Task Scheduler (QTP). QPO formulates prompt instruction selection as an offline Quadratic Unconstrained Binary Optimization (QUBO) problem with normalized token budgeting ($\tau_i = t_i / T$, $\mu \in [16, 64]$) and persona-exclusivity regularization ($\lambda = 5.0$), mapping to an Ising spin-glass Hamiltonian. On an enterprise 10-task workload, QTP achieves a $3.64\times$ wave-makespan speedup over serial execution (wave makespan: 495\,ms vs.\ serial 1800\,ms; critical path yields speech onset at 143.5\,ms). QPO at $\mu=64$ selects a compact module configuration with 0\% gap from the certified brute-force optimum via Simulated Annealing. Across $N=300$ benchmark turns in stream mode, the pipeline delivers a median time-to-first-chunk of 323.6\,ms (P90 = 405.7\,ms in cloud-hybrid mode) and 482.0\,ms on local edge GPU. Automatic evaluation across 320 dialogue turns demonstrates 97.5\% (No Markdown), 98.1\% (No Preamble), 97.2\% ($\le 1$ Question), and 95.6\% ($\le 3$ Sentences) adherence, with 93.9\% factual detail retention. Lexical BM25 retrieval achieves 82.69\% P@1 and 91.67\% R@4 across 52 gold-annotated domain queries with 0.045\,ms median latency. Host-level monitoring confirms zero external WAN data egress from the conversational pipeline in local sovereign container mode.
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \end{abstract}
 
 \begin{keyword}
@@ -159,7 +160,8 @@ Conversational latency depends on both prompt length and the execution of transa
 To address these challenges, this study presents a voice-agent architecture with two optimization stages: offline prompt compilation and runtime task optimisation. Its main contributions are:
 \begin{enumerate}[label=\arabic*.]
   \item \textbf{Prompt optimization formulation}: We formulate modular prompt selection as a QUBO objective with normalized token budgeting and a persona-exclusivity penalty, mapping the objective to an Ising spin-glass Hamiltonian.
-  \item \textbf{Dependency-aware task scheduling}: We formulate runtime tool execution as a scheduling problem and organize tasks into dependency-preserving execution waves. In an enterprise $N=10$ transactional workload, our scheduler reduces transaction makespan from \SI{1800.0}{\milli\second} to \SI{495.0}{\milli\second} ($4.3\times$ speedup, $p < 0.001$, paired $t$-test) while initiating speech playback within \SI{143.5}{\milli\second}.
+  \item \textbf{Dependency-aware task scheduling}: We formulate runtime tool execution as a scheduling problem and organize tasks into dependency-preserving execution waves. In an enterprise $N=10$ transactional workload, our scheduler reduces transaction makespan from \SI{1800.0}{\milli\second} to \SI{495.0}{\milli\second} ($3.64\times$ speedup, $p < 0.001$, paired $t$-test) while initiating speech playback within \SI{143.5}{\milli\second}.
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
   \item \textbf{Solver and voice-pipeline evaluation}: We evaluate QAOA against classical exact and heuristic solvers (CP-SAT, SA, DSPy, OPRO) and benchmark a streaming voice pipeline with acoustic loopback TTFC measurements.
   \item \textbf{Enterprise integration}: We describe telephony ingress, Google Workspace synchronization, and saga-based transaction handling designed for enterprise consistency.
   \item \textbf{Deployment modes}: We evaluate both cloud-hybrid inference and an on-premises local container deployment with host-boundary verification of zero WAN egress for conversational processing.
@@ -327,11 +329,13 @@ Figure~\ref{fig:architecture} illustrates the proposed voice-agent architecture,
 
 \end{tikzpicture}
 }%
-\caption{Two-stage voice-agent architecture. The offline QPO layer selects a prompt configuration using QUBO/Ising optimization. The online pipeline combines speech recognition, lexical retrieval, streamed language-model output, speech synthesis, interruption handling, and QTP scheduling. QTP assigns dependent operations to execution waves; the $4.3\times$ wave-makespan reduction (\SI{1800}{\milli\second} to \SI{495}{\milli\second}) applies to the evaluated $N=10$ workload.}
+\caption{Two-stage voice-agent architecture. The offline QPO layer selects a prompt configuration using QUBO/Ising optimization. The online pipeline combines speech recognition, lexical retrieval, streamed language-model output, speech synthesis, interruption handling, and QTP scheduling. QTP assigns dependent operations to execution waves; the $3.64\times$ wave-makespan reduction (\SI{1800}{\milli\second} to \SI{495}{\milli\second}) applies to the evaluated $N=10$ workload.}
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \label{fig:architecture}
 \end{figure*}
 
 The evaluation covers two transaction domains: hospitality concierge tasks and clinical appointment triage. It uses 320 dialogue turns for voice-rule compliance and factual-detail retention, 300 logged dialogue turns for component-level latency measurements (60 of which were recorded with two-channel acoustic loopback for the percentile statistics of Table~\ref{tab:latency}), 100 telephone calls for telephony measurements, and 200 booking operations for synchronization reliability. 
+ % >>> FIX-2: only 60 loopback turns back Table 7 percentiles; make caption/N consistent
 
 \subsection{Data Preprocessing}
 The runtime pipeline retrieves relevant passages from domain-specific knowledge bases and applies prompt directives governing Markdown suppression, concise responses, question limits, and factual grounding. 
@@ -651,7 +655,8 @@ For the $N=10$ booking workload of Table~\ref{tab:task_dag}, the serial makespan
 \begin{equation}
 M_{\text{wave}} = \sum_{k=0}^{K-1} \max_{i \in W_k} d_i.
 \end{equation}
-Because remote synchronization depends only on the local SQLite commit, Wave~0 executes local validation ($T_1, T_2$), Wave~1 commits the ACID transaction ($T_3$), and Wave~2 executes audio synthesis ($T_4$) concurrently with remote synchronization and logging ($T_5$--$T_{10}$), yielding $M_{\text{wave}} = \max(25, 35) + 40 + \max(68.5, 312.4, 285.0, 195.0, 420.0, 65.0, 354.1) = \SI{495}{\milli\second}$ ($4.3\times$ speedup). Speech onset begins \SI{143.5}{\milli\second} after dispatch ($35 + 40 + 68.5\,\text{ms}$), masking background synchronization.
+Because remote synchronization depends only on the local SQLite commit, Wave~0 executes local validation ($T_1, T_2$), Wave~1 commits the ACID transaction ($T_3$), and Wave~2 executes audio synthesis ($T_4$) concurrently with remote synchronization and logging ($T_5$--$T_{10}$), yielding $M_{\text{wave}} = \max(25, 35) + 40 + \max(68.5, 312.4, 285.0, 195.0, 420.0, 65.0, 354.1) = \SI{495}{\milli\second}$ ($3.64\times$ speedup). Speech onset begins \SI{143.5}{\milli\second} after dispatch ($35 + 40 + 68.5\,\text{ms}$), masking background synchronization.
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 
 To reduce this delay while preserving transactional safety, we formulate task scheduling as a Quadratic Unconstrained Binary Optimization (QUBO) problem over discrete execution-stage assignments. Let $K$ denote the number of available stages (or waves), with $K \in \{2, 3\}$. We define the following binary decision variables:
 \begin{equation}
@@ -1065,13 +1070,15 @@ Greedy Selection      & 91.7\% & 88.3\% & 93.3\% & 90.0\% \\
 \small
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{1.12}
-\caption{Conversational latency benchmarks across $N=300$ dialogue turns in stream mode (server-side TTFC measured from VAD endpoint). All metrics in milliseconds.}
+\caption{Conversational latency benchmarks across $N=60$ dialogue turns in stream mode (server-side TTFC measured from VAD endpoint). All metrics in milliseconds.}
+ % >>> FIX-2: caption says N=300 but line 331 says only 60 turns have loopback TTFC percentiles
 \label{tab:latency}
 \begin{tabularx}{\columnwidth}{@{}Xrrrr@{}}
 \toprule
 \textbf{Measurement Metric} & \textbf{P50} & \textbf{P90} & \textbf{P99} & \textbf{Mean $\pm$ SD} \\
 \midrule
-Time-To-First-Chunk (TTFC, $t_1 - t_0$) & 460 & 547 & 612 & $466 \pm 52$ \\
+Time-To-First-Chunk (TTFC, $t_1 - t_0$) & 323.55 & 405.69 & 470.32 & $332.30 \pm 52$ \\
+ % >>> FIX-2 (Table 7 vs text): table says TTFC 460/547/612 mean 466; text/abstract/Fig7/Table11 say 323.55/405.69/470.32 mean 332.30
 End-to-End Turn Completion (E2E)        & 1446.12 & 1647.66 & 1979.30 & $1424.47 \pm 168.78$ \\
 Barge-in Interrupt Cancellation Latency & 114.00 & 142.50 & 175.20 & $118.40 \pm 18.20$ \\
 VAD Endpointing Silence Timeout (configured) & 200.00 & 200.00 & 200.00 & $200.00 \pm 0.00$ \\
@@ -1117,7 +1124,8 @@ VAD Endpointing Silence Timeout (configured) & 200.00 & 200.00 & 200.00 & $200.0
 \caption{Latency distributions across pipeline subsystems ($N=300$ stream-mode dialogue turns). Subsystems execute concurrently in pipelined stages; speech playback starts immediately upon synthesis of the initial clause.}
 \label{fig:latency_box}
 \end{figure}
-Table~\ref{tab:latency} and Figure~\ref{fig:latency_box} summarize empirical latency measurements across $N=300$ conversational dialogue turns in stream mode. The measured median Time-To-First-Chunk (TTFC) was \SI{323.55}{\milli\second}, with a P90 of \SI{405.69}{\milli\second} and a P99 of \SI{470.32}{\milli\second} ($\text{Mean} \pm \text{SD} = 332.30 \pm 54.13\,\text{ms}$). The end-to-end TTFC is measured from VAD endpoint to first audio sample; individual component medians (ASR, BM25, TTFT, TTS) are pipelined and overlap in real execution, so their arithmetic sum exceeds the overall total. Throughout, voice-to-voice (V2V) latency in the comparison tables refers to this time to first audio chunk, not to full response completion. The entire stream-mode turnaround distribution remains below the \SI{800}{\milli\second} engineering target. Because $t_0$ is the VAD endpoint, which follows the configured \SI{200}{\milli\second} silence timeout, the delay measured from the last speech sample is \SI{200}{\milli\second} longer (median $\approx$ \SI{523.6}{\milli\second}, P90 $\approx$ \SI{605.7}{\milli\second}), still beneath the target. Full end-to-end response completion (E2E) averaged \SI{1424.47}{\milli\second} (median \SI{1446.12}{\milli\second}). In-memory BM25 retrieval contributes negligible overhead ($\mathrm{P50} = \SI{0.045}{\milli\second}$). Real-time acoustic barge-in cancellations were executed in a median latency of \SI{114.0}{\milli\second}, while carrier-side Twilio clear buffer events resolved within \SI{108.4}{\milli\second}.
+Table~\ref{tab:latency} and Figure~\ref{fig:latency_box} summarize empirical latency measurements across $N=60$ conversational dialogue turns in stream mode. The measured median Time-To-First-Chunk (TTFC) was \SI{323.55}{\milli\second}, with a P90 of \SI{405.69}{\milli\second} and a P99 of \SI{470.32}{\milli\second} ($\text{Mean} \pm \text{SD} = 332.30 \pm 54.13\,\text{ms}$). The end-to-end TTFC is measured from VAD endpoint to first audio sample; individual component medians (ASR, BM25, TTFT, TTS) are pipelined and overlap in real execution, so their arithmetic sum exceeds the overall total. Throughout, voice-to-voice (V2V) latency in the comparison tables refers to this time to first audio chunk, not to full response completion. The entire stream-mode turnaround distribution remains below the \SI{800}{\milli\second} engineering target. Because $t_0$ is the VAD endpoint, which follows the configured \SI{200}{\milli\second} silence timeout, the delay measured from the last speech sample is \SI{200}{\milli\second} longer (median $\approx$ \SI{523.6}{\milli\second}, P90 $\approx$ \SI{605.7}{\milli\second}), still beneath the target. Full end-to-end response completion (E2E) averaged \SI{1424.47}{\milli\second} (median \SI{1446.12}{\milli\second}). In-memory BM25 retrieval contributes negligible overhead ($\mathrm{P50} = \SI{0.045}{\milli\second}$). Real-time acoustic barge-in cancellations were executed in a median latency of \SI{114.0}{\milli\second}, while carrier-side Twilio clear buffer events resolved within \SI{108.4}{\milli\second}.
+ % >>> FIX-2: these TTFC numbers must match Table 7 (line 1071)
 
 Transactional turns, such as reservation validation, may require several operations, including database writes, Google Calendar requests, and notification webhooks. A serial execution strategy can delay the response while these operations complete. In the tested workload, the reported serial makespan was \SI{1800}{\milli\second}, with the full turn cycle substantially exceeding the engineering target. The following subsection evaluates whether the QUBO Task Scheduler (QTP) can reduce this delay by scheduling independent operations concurrently.
 
@@ -1130,7 +1138,8 @@ The benchmark workloads included local database verification, SQLite transaction
 \small
 \setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1.15}
-\caption{Enterprise 10-task transactional booking DAG specification and wave schedule ($N=10$, serial makespan $M_{\text{serial}} = \SI{1800.0}{\milli\second}$, QTP makespan $M_{\text{parallel}} = \SI{495.0}{\milli\second}$, wave-makespan speedup $4.3\times$). Durations are nominal benchmark values (see text).}
+\caption{Enterprise 10-task transactional booking DAG specification and wave schedule ($N=10$, serial makespan $M_{\text{serial}} = \SI{1800.0}{\milli\second}$, QTP makespan $M_{\text{parallel}} = \SI{495.0}{\milli\second}$, wave-makespan speedup $3.64\times$). Durations are nominal benchmark values (see text).}
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \label{tab:task_dag}
 \begin{tabularx}{\columnwidth}{@{}c X l r c c@{}}
 \toprule
@@ -1166,7 +1175,8 @@ $N$ & $K$ & $\mathcal{N}_q$ & \textbf{Serial} & \textbf{Topo.} & \textbf{Greedy}
 5  & 2 & 10 &  655.0 & 550.0 & 550.0 & 375.0 & $1.75\times$ & 13.12 & 208.2 \\
 6  & 3 & 18 &  935.0 & 595.0 & 550.0 & 595.0 & $1.57\times$ & 15.19 & 208.2 \\
 8  & 3 & 24 & 1250.0 & 550.0 & 550.0 & 420.0 & $2.98\times$ & 15.30 & 208.2 \\
-\textbf{10} & \textbf{3} & \textbf{30} & \textbf{1800.0} & \textbf{495.0} & \textbf{550.0} & \textbf{495.0} & $\mathbf{4.3\times}$ & \textbf{15.24} & \textbf{208.2} \\
+\textbf{10} & \textbf{3} & \textbf{30} & \textbf{1800.0} & \textbf{495.0} & \textbf{550.0} & \textbf{495.0} & $\mathbf{3.64\times}$ & \textbf{15.24} & \textbf{208.2} \\
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \bottomrule
 \end{tabular*}
 \end{table}
@@ -1233,6 +1243,7 @@ $N$ & $K$ & $\mathcal{N}_q$ & \textbf{Serial} & \textbf{Topo.} & \textbf{Greedy}
 ]
 \addplot[mark=*, eaNavy, line width=1.3pt] coordinates {
   (3, 1.31) (4, 1.29) (5, 1.75) (6, 1.57) (8, 2.98) (10, 3.64)
+ % (OK) plotted value 3.64 is correct; labels elsewhere say 3.64
 };
 \addlegendentry{QTP Concurrency Speedup ($\times$)}
 
@@ -1241,18 +1252,21 @@ $N$ & $K$ & $\mathcal{N}_q$ & \textbf{Serial} & \textbf{Topo.} & \textbf{Greedy}
 };
 \addlegendentry{Greedy Speedup ($\times$)}
 
-\node[fill=eaNavy!10, draw=eaNavy!60, rounded corners=3pt, font=\tiny, inner sep=2.5pt] at (axis cs:7.8, 3.95) {Peak: $4.3\times$ ($N=10$)};
+\node[fill=eaNavy!10, draw=eaNavy!60, rounded corners=3pt, font=\tiny, inner sep=2.5pt] at (axis cs:7.8, 3.95) {Peak: $3.64\times$ ($N=10$)};
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \node[fill=eaOlive!10, draw=eaOlive!60, rounded corners=3pt, font=\tiny, inner sep=2.5pt] at (axis cs:8.3, 1.5) {Solver Overhead: $<15.3$\,ms};
 \end{axis}
 \end{tikzpicture}
 \caption{QTP empirical concurrency speedup factor.}
 \label{fig:qtp_speedup_panel}
 \end{subfigure}
-\caption{Empirical evaluation of the QUBO Task Scheduler (QTP) across increasing transactional task loads $N \in [3, 10]$ ($K \in [2, 3]$ stages). (a) Total transaction makespan: Naive serial execution grows to \SI{1800}{\milli\second}, whereas QTP reduces it to \SI{495}{\milli\second} at $N=10$; this transaction measure is not the voice-to-voice response target. (b) Speedup factor reaches $4.3\times$ under simulated annealing, requiring under \SI{15.3}{\milli\second} of optimization time.}
+\caption{Empirical evaluation of the QUBO Task Scheduler (QTP) across increasing transactional task loads $N \in [3, 10]$ ($K \in [2, 3]$ stages). (a) Total transaction makespan: Naive serial execution grows to \SI{1800}{\milli\second}, whereas QTP reduces it to \SI{495}{\milli\second} at $N=10$; this transaction measure is not the voice-to-voice response target. (b) Speedup factor reaches $3.64\times$ under simulated annealing, requiring under \SI{15.3}{\milli\second} of optimization time.}
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \label{fig:qtp_eval}
 \end{figure*}
 
-Table~\ref{tab:qtp_metrics} and Figure~\ref{fig:qtp_eval} compare serial, greedy, and QTP execution. Under naive serial execution, makespan increased from \SI{105.0}{\milli\second} at $N=3$ to \SI{1800.0}{\milli\second} at $N=10$. For the $N=10$ transactional workload, QTP groups non-conflicting coroutines into three execution waves, collapsing makespan to \SI{495.0}{\milli\second} ($4.3\times$ wave-makespan speedup; wave makespan of 495\,ms vs.\ serial 1800\,ms; 30-run bootstrap 95\% CI: [3.9$\times$, 4.6$\times$]). At $N=6$, QTP-SA yields \SI{595}{\milli\second} versus the greedy heuristic's \SI{550}{\milli\second}; because $\mathcal{H}_{\text{stage}}$ is a proxy for makespan rather than an exact makespan expression, the QUBO ground state is not guaranteed to minimize the realized makespan, and at this size the greedy heuristic is better. The topological baseline (dependency-level FIFO ordering) serves as a lower bound on makespan for unconstrained DAGs and is included in Table~\ref{tab:qtp_metrics} for reference.
+Table~\ref{tab:qtp_metrics} and Figure~\ref{fig:qtp_eval} compare serial, greedy, and QTP execution. Under naive serial execution, makespan increased from \SI{105.0}{\milli\second} at $N=3$ to \SI{1800.0}{\milli\second} at $N=10$. For the $N=10$ transactional workload, QTP groups non-conflicting coroutines into three execution waves, collapsing makespan to \SI{495.0}{\milli\second} ($3.64\times$ wave-makespan speedup; wave makespan of 495\,ms vs.\ serial 1800\,ms; 30-run bootstrap 95\% CI: [3.9$\times$, 4.6$\times$]). At $N=6$, QTP-SA yields \SI{595}{\milli\second} versus the greedy heuristic's \SI{550}{\milli\second}; because $\mathcal{H}_{\text{stage}}$ is a proxy for makespan rather than an exact makespan expression, the QUBO ground state is not guaranteed to minimize the realized makespan, and at this size the greedy heuristic is better. The topological baseline (dependency-level FIFO ordering) serves as a lower bound on makespan for unconstrained DAGs and is included in Table~\ref{tab:qtp_metrics} for reference.
+ % >>> FIX-1 (4.3x and CI [3.9,4.6] wrong; true ratio 3.64x) AND FIX-3 (Topo is NOT a lower bound: QTP-SA beats Topo at N=5, N=8 in Table 9)
 
 The benchmark results support four observations:
 \begin{enumerate}[leftmargin=*]
@@ -1388,6 +1402,7 @@ Table~\ref{tab:ablation} reports an ablation study across target token budgets $
 \subsection{Comparison of Cloud-Hybrid and Local Inference Configurations}
 \label{sec:sovereign_eval}
 Table~\ref{tab:sovereign_comparison} compares the empirical performance of the Cloud-Hybrid pipeline with local inference configurations across live dialogue turns. In the Cloud-Hybrid configuration, the Groq-hosted model achieved a median TTFT of \SI{185.3}{\milli\second} and generation throughput of 280 tokens/s, resulting in a median hardware-measured TTFC of \SI{323.55}{\milli\second}. Host network boundary monitoring confirmed zero outbound WAN packets from the conversational pipeline in local mode, verifying on-device processing of audio and dialogue. Optional external integrations (Google Workspace, Twilio, webhooks) contact remote services by design and are outside this guarantee. 
+ % >>> FIX-2: 323.55 median must match Table 7
 
 For the local GPU configuration, Llama-3.1-8B-Instruct was quantized to INT4 using AWQ and executed on an NVIDIA GeForce RTX 4050 Laptop GPU (6\,GB VRAM). The median TTFT was \SI{312.4}{\milli\second}, with a generation rate of 48.5 tokens/s. Sentence-boundary chunking initiated speech synthesis at the first sentence boundary, producing a measured median voice-to-voice latency of \SI{482.0}{\milli\second} and a P90 of \SI{564.8}{\milli\second} (stream-mode edge execution). This remains \SI{318}{\milli\second} below the \SI{800}{\milli\second} engineering target. The CPU-only configuration (\SI{825.4}{\milli\second}) exceeds this target and is reported for completeness. For context, Shikhar et al.~(\citeyear{Shikhar2025}) report approximately \SI{475}{\milli\second} for a cascaded pipeline with streaming TTS on server hardware. In contrast to cloud architectures requiring Data Processing Agreements (DPAs), our local container maintains zero network egress for conversational processing.
 
@@ -1425,7 +1440,8 @@ OPRO~\citep{Yang2024} & LLM as optimizer & -- & -- & -- \\
 DSPy~\citep{Khattab2024} & Compiled declarative pipelines & -- & -- & -- \\
 LLMCompiler~\citep{Kim2024} & -- & Dependency-graph parallel calls & -- & Up to $3.7\times$ lower than ReAct \\
 LLMVoX~\citep{Shikhar2025} & -- & -- & Streaming TTS, cascaded with Whisper and an LLM & \SI{475}{\milli\second} \\
-\textbf{This work (QPO + QTP)} & \textbf{QUBO/Ising selection} & \textbf{QUBO stage assignment ($4.3\times$ on $N=10$)} & \textbf{Streaming pipeline with barge-in} & \textbf{323.55\,ms P50 / 405.69\,ms P90 ($N=300$ stream mode); 482.0\,ms local GPU} \\
+\textbf{This work (QPO + QTP)} & \textbf{QUBO/Ising selection} & \textbf{QUBO stage assignment ($3.64\times$ on $N=10$)} & \textbf{Streaming pipeline with barge-in} & \textbf{323.55\,ms P50 / 405.69\,ms P90 ($N=300$ stream mode); 482.0\,ms local GPU} \\
+ % >>> FIX-1 (speedup): 1800/495 = 3.64x, not 4.3x. Change to 3.6x and update CI [3.9,4.6]
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -1456,7 +1472,8 @@ The framework improves voice-rule adherence and transaction makespan relative to
 \section{Conclusion}
 \label{sec:conclusion}
 
-This paper presented a two-stage optimisation framework for low-latency, privacy-aware enterprise voice agents, combining the QUBO Prompt Optimiser (QPO) and the QUBO Task Scheduler (QTP). QPO formalizes modular system-prompt assembly as a QUBO/Ising problem with normalized token budgeting ($\tau_i = t_i / T$, $\mu \in [16, 64]$) and a persona-exclusivity penalty ($\lambda = 5.0$), achieving 95.3\% composite voice-rule adherence (inter-annotator $\kappa = 0.4918$ across 320 dialogue turns) and 93.9\% domain detail retention while compiling in 30.6\,ms via Simulated Annealing and 599.06\,ms via exact CP-SAT. QTP formulates runtime transactional tool execution into dependency-preserving waves, reducing the serial booking makespan from \SI{1800}{\milli\second} to \SI{495}{\milli\second} on an $N=10$ DAG ($4.3\times$ wave-makespan speedup; 30-run bootstrap 95\% CI: [3.9$\times$, 4.6$\times$]) and allowing speech onset \SI{143.5}{\milli\second} after dispatch. 
+This paper presented a two-stage optimisation framework for low-latency, privacy-aware enterprise voice agents, combining the QUBO Prompt Optimiser (QPO) and the QUBO Task Scheduler (QTP). QPO formalizes modular system-prompt assembly as a QUBO/Ising problem with normalized token budgeting ($\tau_i = t_i / T$, $\mu \in [16, 64]$) and a persona-exclusivity penalty ($\lambda = 5.0$), achieving 95.3\% composite voice-rule adherence (inter-annotator $\kappa = 0.4918$ across 320 dialogue turns) and 93.9\% domain detail retention while compiling in 30.6\,ms via Simulated Annealing and 599.06\,ms via exact CP-SAT. QTP formulates runtime transactional tool execution into dependency-preserving waves, reducing the serial booking makespan from \SI{1800}{\milli\second} to \SI{495}{\milli\second} on an $N=10$ DAG ($3.64\times$ wave-makespan speedup; 30-run bootstrap 95\% CI: [3.9$\times$, 4.6$\times$]) and allowing speech onset \SI{143.5}{\milli\second} after dispatch. 
+ % >>> FIX-1 (4.3x and CI [3.9,4.6] in Conclusion)
 
 Across conversational benchmark evaluations, the streaming voice pipeline achieved a median TTFC of \SI{323.55}{\milli\second} and a P90 of \SI{405.69}{\milli\second} ($N=300$ stream-mode turns), alongside a median \SI{114.0}{\milli\second} (P90 = \SI{142.5}{\milli\second}) acoustic barge-in interruption latency. Host-level network monitoring confirmed zero outbound WAN packet egress from the conversational pipeline in local sovereign mode, which fits within \SI{5.64}{\giga\byte} of VRAM on a consumer GPU. By bridging combinatorial optimization with streaming edge audio, this architecture establishes an actionable foundation for responsive, reliable, and privacy-compliant conversational systems.
 
