@@ -16,6 +16,10 @@ authors:
     given-names: S.
     email: s_sountharrajan@ch.amrita.edu
     affiliation: "Amrita Vishwa Vidyapeetham, Chennai"
+  - family-names: Meenatchi
+    given-names: K. V.
+    email: kv_meenatchi@ch.amrita.edu
+    affiliation: "Amrita Vishwa Vidyapeetham, Chennai"
 repository-code: "https://github.com/Mukesh-charan/voice-agent-studio-qubo"
 abstract: >
   A real-time voice agent system for hospitality and clinic booking, featuring
