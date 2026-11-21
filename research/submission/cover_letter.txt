@@ -1,0 +1,46 @@
+Cover Letter
+============
+
+To:
+Editor-in-Chief / Handling Editor
+Engineering Applications of Artificial Intelligence (EAAI)
+Elsevier
+
+Subject: Submission of Original Research Article titled "Low-latency, privacy-aware conversational voice agent studio with QUBO-based prompt and task optimisation"
+
+Dear Editor-in-Chief,
+
+We are pleased to submit our original research manuscript entitled "Low-latency, privacy-aware conversational voice agent studio with QUBO-based prompt and task optimisation" for consideration as a regular research paper in Engineering Applications of Artificial Intelligence (EAAI).
+
+Overview and Key Contributions:
+Real-time conversational voice agents in transactional enterprise domains (e.g., hospitality reservations and healthcare clinic bookings) face strict constraints: responding within human conversational pauses (<800 ms time-to-first-chunk, TTFC) while simultaneously coordinating multi-system transactional workflows (CRM, vector search, calendar booking) and preserving user privacy. Conventional architectures either execute operations serially—leading to unacceptable latency spikes (>1.8 s)—or employ unconstrained heuristic parallelism that violates transactional dependencies and rate limits.
+
+In this work, we present an end-to-end combinatorial optimization framework:
+1. Offline QUBO Prompt Optimiser (QPO): Formulates prompt assembly as a Quadratic Unconstrained Binary Optimization problem with token budgeting and persona-exclusivity constraints, mapped to an Ising spin-glass Hamiltonian. QPO achieves a 0% optimality gap from the brute-force optimum via simulated annealing.
+2. Runtime QUBO Task Scheduler (QTP): Maps interdependent transactional workflows to a conflict-penalized QUBO model, yielding a 3.64x wave-makespan reduction (495.0 ms vs. 1800.0 ms serial) and reducing critical speech onset to 143.5 ms.
+3. Full Edge-Deployable Architecture: Integrates an AudioWorklet-based client-side barge-in detector (6.4 ms interrupt latency), an in-memory BM25 retrieval engine (11.5 ms latency), role-based access control, and a zero-latency PII redaction filter. Across 300 benchmark turns in streaming mode, the pipeline delivers a median time-to-first-chunk of 323.6 ms (P90: 405.7 ms), comfortably below the conversational target.
+
+Significance to EAAI:
+This study bridges applied discrete optimization (QUBO/Ising models and quantum-inspired annealing) and conversational AI engineering, providing concrete architectural blueprints, rigorous statistical testing (bootstrap CIs, McNemar tests), and reproducible artifact releases.
+
+Declarations:
+- This manuscript represents original work that has not been published previously and is not under consideration for publication elsewhere.
+- All authors have approved the manuscript and agree with its submission to Engineering Applications of Artificial Intelligence.
+- No human subjects or animal models were used; all data are derived from synthetic benchmark queries and public datasets.
+- The authors declare no competing financial or personal interests.
+- Full code, dataset matrices, and timing benchmarks are openly available at GitHub (https://github.com/Mukesh-charan/Voice-Agent-Studio) and archived on Zenodo (DOI: 10.5281/zenodo.24220510).
+
+Corresponding Author Contact:
+Mukesh Charan
+Department of Computer Science and Engineering, School of Computing
+Amrita Vishwa Vidyapeetham, Chennai, Tamil Nadu 601103, India
+Email: mukeshcharan2905@gmail.com
+
+Thank you very much for your time and consideration of our manuscript.
+
+Sincerely,
+Mukesh Charan (Corresponding Author)
+Sanjjey Arumugam
+S. Sountharrajan (Faculty Supervisor)
+K. V. Meenatchi (Faculty Supervisor)
+Amrita Vishwa Vidyapeetham, India

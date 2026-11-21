@@ -1,11 +1,7 @@
-Funding Statement
-=================
+Ethics Statement
+================
 
-TODO_HUMAN: Insert funding information here before submission.
-
-This work was supported by [GRANT AGENCY] under grant number [GRANT NUMBER].
-[Add any additional funding sources.]
-
-If no external funding: "This research received no specific grant from any
-funding agency in the public, commercial, or not-for-profit sectors."
-
+The dialogue evaluation in this study was conducted using synthetic benchmark
+prompts and automated simulation queries. No human subjects, clinical patients,
+or personally identifiable customer data were involved; institutional ethical
+committee approval was not required.
